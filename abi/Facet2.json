@@ -1,0 +1,1 @@
+[{"type":"function","name":"getStr1","constant":true,"stateMutability":"view","payable":false,"gas":1100000,"inputs":[],"outputs":[{"type":"string"}]},{"type":"function","name":"getStr2","constant":true,"stateMutability":"view","payable":false,"gas":1100000,"inputs":[],"outputs":[{"type":"string"}]}]

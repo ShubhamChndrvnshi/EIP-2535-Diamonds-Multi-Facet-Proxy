@@ -4,7 +4,9 @@ pragma solidity ^0.8.0;
 contract Test1Facet {
     event TestEvent(address something);
 
-    function test1Func1() external {}
+    function test1Func1() external pure returns(string memory){
+        return "this works";
+    }
 
     function test1Func2() external {}
 

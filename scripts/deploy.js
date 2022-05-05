@@ -1,9 +1,10 @@
 /* global ethers */
 /* eslint prefer-const: "off" */
-const { writeFileSync } = require("fs");
+const { writeFileSync, mkdirSync } = require("fs");
 const { getSelectors, FacetCutAction } = require('./libraries/diamond.js')
 
 async function deployDiamond () {
+  mkdirSync("abi", { recursive: true });
   const accounts = await ethers.getSigners()
   const contractOwner = accounts[0]
 
@@ -32,7 +33,9 @@ async function deployDiamond () {
   console.log('Deploying facets')
   const FacetNames = [
     'DiamondLoupeFacet',
-    'OwnershipFacet'
+    'OwnershipFacet',
+    'Facet1',
+    'Facet2',
   ]
   const cut = []
   for (const FacetName of FacetNames) {
@@ -45,6 +48,7 @@ async function deployDiamond () {
       action: FacetCutAction.Add,
       functionSelectors: getSelectors(facet)
     })
+    createAbiJSON(facet, FacetName)
   }
 
   // upgrade diamond with facets
@@ -75,6 +79,12 @@ if (require.main === module) {
       console.error(error)
       process.exit(1)
     })
+}
+
+/// CREATE ABI OF CONTRACTS
+function createAbiJSON(artifact, filename) {
+  const data = JSON.parse(artifact.interface.format("json"));
+  writeFileSync(`${__dirname}/../abi/${filename}.json`, JSON.stringify(data));
 }
 
 exports.deployDiamond = deployDiamond
